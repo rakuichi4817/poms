@@ -1,0 +1,17 @@
+{
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "editor.formatOnSave": true,
+    "python.analysis.extraPaths": [
+        "../backend/app"
+    ],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length=119"
+    ],
+    "python.linting.flake8Args": [
+        "--max-line-length=119",
+        "--ignore=E203, E266, E501, W503, F401, F403, F405"
+    ],
+}
