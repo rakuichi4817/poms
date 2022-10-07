@@ -23,7 +23,7 @@ async def add(query: samples.AddIn = Depends()):
 
 
 @router.post("/mosaic")
-async def mosaic(file: bytes = File(...)):
+async def mosaic(file: bytes = File(..., description="モザイクをつける画像")):
     """顔にモザイクを追加する
 
     Parameters

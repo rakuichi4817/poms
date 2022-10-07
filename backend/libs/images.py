@@ -7,7 +7,7 @@ import numpy as np
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
 
-def _byte2img(image_byte: bytes):
+def _byte2img(image_byte: bytes) -> np.ndarray:
     """画像のバイナリデータをcv2で扱える形にする
 
     Parameters
@@ -17,14 +17,14 @@ def _byte2img(image_byte: bytes):
 
     Returns
     -------
-    Any
+    np.ndarray
         cv2で利用可能なデータ型
     """
     return cv2.imdecode(np.frombuffer(image_byte, dtype="uint8"), cv2.IMREAD_UNCHANGED)
 
 
-def _mosaic(img, ratio: float = 0.1):
-    """_summary_
+def _mosaic(img: np.ndarray, ratio: int | float = 0.1) -> np.ndarray:
+    """モザイク処理
 
     Notes
     -----
@@ -32,9 +32,38 @@ def _mosaic(img, ratio: float = 0.1):
 
     Parameters
     ----------
-    img : Any
+    img : np.ndarray
         _byte2imgの出力
     ratio : float, optional
+        縮小率, by default 0.1
+
+    Returns
+    -------
+    np.ndarray
+        モザイクの適用後画像
+    """
+    small = cv2.resize(img, None, fx=ratio, fy=ratio, interpolation=cv2.INTER_NEAREST)
+    return cv2.resize(small, img.shape[:2][::-1], interpolation=cv2.INTER_NEAREST)
+
+
+def _mosaic_area(
+    img: np.ndarray, x: np.integer, y: np.integer, width: np.integer, height: np.integer, ratio: int | float = 0.1
+):
+    """モザイクを指定の範囲に適用
+
+    Parameters
+    ----------
+    img : np.ndarray
+        _byte2imgの出力
+    x : np.integer
+        顔の検出基準位置（x座標）
+    y : np.integer
+        顔の検出基準位置（y座標）
+    width : np.integer
+        幅
+    height : np.integer
+        高さ
+    ratio : int | float, optional
         縮小率, by default 0.1
 
     Returns
@@ -42,11 +71,6 @@ def _mosaic(img, ratio: float = 0.1):
     Any
         モザイクの適用後画像
     """
-    small = cv2.resize(img, None, fx=ratio, fy=ratio, interpolation=cv2.INTER_NEAREST)
-    return cv2.resize(small, img.shape[:2][::-1], interpolation=cv2.INTER_NEAREST)
-
-
-def _mosaic_area(img, x, y, width, height, ratio=0.1):
 
     dst = img.copy()
     dst[y : y + height, x : x + width] = _mosaic(dst[y : y + height, x : x + width], ratio)
@@ -73,5 +97,5 @@ def face_mosaic(image_byte: bytes) -> bytes:
 
     for x, y, w, h in faces:
         dst_face = _mosaic_area(img, x, y, w, h)
-    res, img_png = cv2.imencode(".png", dst_face)
+    _, img_png = cv2.imencode(".png", dst_face)
     return img_png.tobytes()

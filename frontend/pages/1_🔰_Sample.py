@@ -44,17 +44,19 @@ with st.container():
     st.write("Postリクエスト（画像ファイルの扱い）")
 
     uploaded_file = st.file_uploader("モザイクを入れる画像を選択")
-    if uploaded_file is not None:
-        bytes_data = uploaded_file.getvalue()
-        st.image(bytes_data)
-    else:
-        st.error("画像を選択してください")
-    # モザイクリクエスト
-    submitted = st.button("モザイク処理")
-    if submitted:
-        with st.spinner("Wait for it..."):
-            response = requests.post(endpoint_url, files={"file": bytes_data})
-            if response.status_code == 200:
-                st.image(response.content)
-            else:
-                st.error("モザイク処理に失敗しました")
+    col1, col2 = st.columns(2)
+    with col1:
+        if uploaded_file:
+            bytes_data = uploaded_file.getvalue()
+            st.image(bytes_data)
+        submitted = st.button("モザイク処理")
+        with col2:
+            if submitted:
+                with st.spinner("Wait for it..."):
+                    response = requests.post(endpoint_url, files={"file": bytes_data})
+                    if response.status_code == 200:
+                        st.image(response.content)
+                    else:
+                        st.error("モザイク処理に失敗しました")
+    if uploaded_file is None:
+        st.info("画像を選択してください")
