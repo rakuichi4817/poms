@@ -34,29 +34,3 @@ with st.form("get_sample_form"):
         else:
             st.error(f"{response.status_code}エラーが発生しました。詳細は以下を参照ください")
             st.json(response.json())
-
-with st.container():
-    # リクエスト先
-    endpoint_url = urljoin(API_ROOT_PREFIX, f"{endpoint_prefix}/mosaic")
-
-    # 表示と入力
-    st.write("## 顔モザイク処理👻")
-    st.write("Postリクエスト（画像ファイルの扱い）")
-
-    uploaded_file = st.file_uploader("モザイクを入れる画像を選択")
-    col1, col2 = st.columns(2)
-    with col1:
-        if uploaded_file:
-            bytes_data = uploaded_file.getvalue()
-            st.image(bytes_data)
-        submitted = st.button("モザイク処理")
-        with col2:
-            if submitted:
-                with st.spinner("Wait for it..."):
-                    response = requests.post(endpoint_url, files={"file": bytes_data})
-                    if response.status_code == 200:
-                        st.image(response.content)
-                    else:
-                        st.error("モザイク処理に失敗しました")
-    if uploaded_file is None:
-        st.info("画像を選択してください")
