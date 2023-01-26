@@ -33,7 +33,7 @@ def generate_table(query: schema_dataanalysis.GenerateTableIn):
     df = pd.DataFrame(records)
     # ファイルを返す
     return StreamingResponse(
-        iter([df.to_csv(index=False)]),
+        iter(df.to_csv(index=False)),
         media_type="text/csv",
         headers={"Content-Disposition": f"attachment; filename={datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.csv"},
     )
