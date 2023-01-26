@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 @router.post("/mosaic")
-async def mosaic(file: bytes = File(..., description="モザイクをつける画像")):
+def mosaic(file: bytes = File(..., description="モザイクをつける画像")):
     """# 顔にモザイクを追加する
 
     ## Parameters

@@ -11,12 +11,11 @@ router = APIRouter()
 
 
 @router.post("/generate-table")
-async def generate_table(query: schema_dataanalysis.GenerateTableIn):
+def generate_table(query: schema_dataanalysis.GenerateTableIn):
     """# csvファイルの生成
 
     リクエストされた項目条件をもとにcsvファイルを作成する
     """
-
     records = {}
     for column in query.columns:
         # 各項目毎に作成する
@@ -32,6 +31,7 @@ async def generate_table(query: schema_dataanalysis.GenerateTableIn):
             ]
 
     df = pd.DataFrame(records)
+    # ファイルを返す
     return StreamingResponse(
         iter([df.to_csv(index=False)]),
         media_type="text/csv",
