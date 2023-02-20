@@ -1,0 +1,3 @@
+# APIドキュメント
+
+!!swagger openapi.json!!

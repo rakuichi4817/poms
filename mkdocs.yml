@@ -1,0 +1,16 @@
+site_name: POMS
+site_author: Rakuichi
+copyright: Rakuichi
+
+site_dir: docs
+docs_dir: docsrc
+theme:
+  name: material
+  locale: ja
+  features:
+    - toc.integrate
+  palette:
+    primary: brown
+plugins:
+  - search
+  - render_swagger

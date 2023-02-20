@@ -1,3 +1,5 @@
+import json
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -35,5 +37,11 @@ def get_application(test: bool = False) -> FastAPI:
     )
     # routerの設定
     app.include_router(api_router, prefix=settings.API_PREFIX)
+
+    @app.on_event("startup")
+    def save_openapi_json():
+        openapi_data = app.openapi()
+        with open("docsrc/openapi.json", "w") as file:
+            json.dump(openapi_data, file)
 
     return app
