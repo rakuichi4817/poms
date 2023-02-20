@@ -2,6 +2,21 @@
 
 Python Only で作る MicroServices
 
+## ドキュメントについて
+
+mkdocsで作成しています。
+
+GitHub Pagesで公開中：<https://rakuichi4817.github.io/poms/>
+
+ローカル起動する際は以下コマンド
+
+```shell
+# ローカルサーバ起動
+$ pipenv run docs
+# ビルド
+$ pipenv run mkdocs build
+```
+
 ## クイックスタート
 
 ### 仮想環境の構築
